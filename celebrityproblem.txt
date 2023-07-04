@@ -1,0 +1,88 @@
+class Solution 
+{
+    // private:
+    // bool konws(vector<vector<int> >& M, int a,int b){
+    //     if(M[a][b] == 1){
+    //         return true;
+    //     }else{
+    //         return false;
+    //     }
+    // }
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // step 1 push all element in to stack
+        stack<int> st;
+        for(int i=0;i<n;i++){
+            st.push(i);
+        }
+        
+        while(st.size() > 1){
+            int a = st.top();
+            st.pop();
+            
+             int b = st.top();
+            st.pop();
+            
+            bool knows = false;
+            
+            if(M[a][b] == 1){
+            knows = true;
+            }
+            
+            if(knows){
+               st.push(b);
+            }else{
+                st.push(a);
+            }
+        }
+        
+        
+        int ans = st.top();
+        int countrow = 0;
+        bool rowcheck = false;
+        
+        
+        
+        // verify the celebrity whether yes or no
+        
+        for(int i=0;i<n;i++)
+        {
+            if(M[ans][i] == 0){
+                countrow++;
+            }
+        }
+        
+        if(countrow == n)
+           rowcheck =  true;
+       
+       
+        int countcol = 0;
+        bool colcheck = false;
+        
+        
+        
+      
+        
+        for(int i=0;i<n;i++)
+        {
+            if(M[i][ans] == 1){
+                countcol++;
+            }
+        }
+        
+        if(countcol == n-1)
+           colcheck =  true;
+           
+           
+           if(colcheck == true && rowcheck == true){
+               return ans;
+           }else{
+               return -1;
+           }
+       
+        
+        
+    }
+};
