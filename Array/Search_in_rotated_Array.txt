@@ -1,0 +1,83 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution{
+    public:
+    
+   int getPivot(int A[], int s, int e) {
+
+    int mid = s + (e-s)/2;
+
+    while(s<e) {
+
+        if(A[mid] >= A[0])
+        {
+            s = mid+1;
+        }
+        else{
+            e = mid;
+        }
+        mid = s + (e-s)/2;
+    }
+    return s;
+}
+    
+    int binarysearch(int A[], int l, int h, int key){
+        int mid = l+(h-l);
+        
+        while(l<=h)
+        {
+            if(A[mid] == key){
+                return mid;
+            }
+             if(A[mid] > key){
+                 h = mid-1;
+             }else{
+                 l = mid+1;
+             }
+             
+              mid = l+(h-l);
+        }
+        
+        return -1;
+    }
+    int search(int A[], int l, int h, int key){
+        // l: The starting index
+        // h: The ending index, you have to search the key in this range
+        
+        //complete the function here
+        
+        if(l == h){
+            return 0;
+        }
+        
+        int pivot = getPivot(A,l,h);
+        
+        if(A[pivot] <= key && key <= A[h-1]){
+            return binarysearch(A,pivot,h,key);
+        }else{
+            return binarysearch(A,l,pivot-1,key);
+        }
+    }
+};
+
+//{ Driver Code Starts. 
+int main() {
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        int A[n];
+        for(int i = 0; i < n; i++)
+            cin >> A[i];
+        int key;
+        cin >> key;
+        Solution ob;
+        cout << ob.search(A, 0, n - 1, key) << endl;
+    }
+return 0;
+}
+// } Driver Code Ends
