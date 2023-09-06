@@ -1,0 +1,102 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+// } Driver Code Ends
+class Solution
+{
+    public:
+    //Function to insert heap.
+    
+    priority_queue<int> maxHeap;
+    priority_queue<int,vector<int>,greater<int> > minHeap;
+    int median = 0;
+    
+
+    void insertHeap(int &x)
+    {
+        minHeap.push(x);
+        balanceHeaps();
+        
+    }
+    
+    //Function to balance heaps.
+    void balanceHeaps()
+    {
+        int ele = minHeap.top();
+        minHeap.pop();
+        
+        
+        //if both size is equal
+        if(maxHeap.size() == minHeap.size()){
+            if(ele > median){
+                minHeap.push(ele);
+                median = minHeap.top();
+                
+            }else{
+                maxHeap.push(ele);
+                median = maxHeap.top();
+            }
+        }
+        
+        //Here maxheap size is greater than minHeap
+       else if(maxHeap.size() > minHeap.size()){
+            if(ele > median){
+                minHeap.push(ele);
+                median = (minHeap.top() + maxHeap.top())/2;
+                
+            }else{
+                minHeap.push(maxHeap.top());
+                maxHeap.pop();
+                maxHeap.push(ele);
+                 median = (minHeap.top() + maxHeap.top())/2;
+            }
+        }
+        
+        
+         //Here maxheap size is less than minHeap ***if(maxHeap.size() < minHeap.size()) *****
+       else{
+            if(ele > median){
+                maxHeap.push(minHeap.top());
+                minHeap.pop();
+                minHeap.push(ele);
+                median = (minHeap.top() + maxHeap.top())/2;
+                
+            }else{
+                 maxHeap.push(ele);
+                 median = (minHeap.top() + maxHeap.top())/2;
+            }
+        }
+    }
+    
+    //Function to return Median.
+    double getMedian()
+    {
+        return median;
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main()
+{
+    int n, x;
+    int t;
+    cin>>t;
+    while(t--)
+    {
+    	Solution ob;
+    	cin >> n;
+    	for(int i = 1;i<= n; ++i)
+    	{
+    		cin >> x;
+    		ob.insertHeap(x);
+    	    cout << floor(ob.getMedian()) << endl;
+    	}
+    }
+	return 0;
+}
+// } Driver Code Ends
