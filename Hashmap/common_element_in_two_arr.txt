@@ -1,0 +1,24 @@
+#include <bits/stdc++.h> 
+pair < int , int > findSimilarity(vector < int > arr1, vector < int > arr2, int n, int m) 
+{
+	      unordered_map<int,int> mp;
+           pair < int , int > ans;
+
+           for(int i=0;i<n;i++){
+               mp[arr1[i]]++;
+           }
+           int common = 0;
+
+            for(int j=0;j<m;j++){
+                if(mp[arr2[j]] == 1){
+                    mp[arr2[j]]++;
+                    common++;
+
+                }
+               
+           }
+
+           ans.first = common;
+           ans.second = mp.size();
+           return ans;
+}
