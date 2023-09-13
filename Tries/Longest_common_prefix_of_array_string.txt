@@ -1,0 +1,173 @@
+//{ Driver Code Starts
+//Initial template for C++
+
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+//User function template for C++
+
+class TrieNode{
+public:
+    char data;
+    TrieNode* children[26];
+    int childcount;
+    bool isterminal;
+
+    TrieNode(char ch){
+    data = ch;
+    for(int i=0;i<26;i++){
+
+        children[i] = NULL;
+    }
+    isterminal = false;
+    childcount = 0;
+    }
+
+};
+
+
+class Trie{
+
+TrieNode* root;
+public:
+Trie(){
+root = new TrieNode('\0');
+}
+
+void insertUtil(TrieNode* root,string word){
+
+//base case
+if(word.size() == 0){
+    root->isterminal = true;
+    return;
+}
+
+int index = word[0] - 'a';
+TrieNode* child;
+
+//chracter is present
+if(root->children[index] != NULL){
+
+    child = root->children[index];
+}else{
+//absent
+child = new TrieNode(word[0]);
+root->children[index] = child;
+root->childcount++;
+}
+
+//recursion
+insertUtil(child,word.substr(1));
+
+
+}
+
+void insertstr(string word){
+insertUtil(root,word);
+}
+
+void lcp(string first,string& ans){
+    
+    for(int i=0;i<first.size();i++){
+        char ch = first[i];
+        
+        if(root->childcount == 1){
+            ans.push_back(ch);
+            
+            //go forward
+            int index = ch - 'a';
+            root = root->children[index];
+        }else{
+            break;
+        }
+        
+        if(root->isterminal){
+            break;
+        }
+    }
+}
+};
+
+
+
+
+class Solution{
+  public:
+    
+    string longestCommonPrefix (string arr[], int N)
+    {
+       
+    //   //apporach =1
+    //   string ans = "";
+       
+    //   //take the first string from the arr
+    //   for(int i=0;i<arr[0].length();i++){
+    //       char ch = arr[0][i];
+    //       bool match = true;
+           
+    //       //traverse the remaining strings from arr
+    //       for(int j=1;j<N;j++){
+    //           //Not match
+    //           if(arr[j].size() < i || ch != arr[j][i] ){
+    //                 match = false;
+    //                 break;
+    //           }
+    //       }
+           
+    //       if(match == false){
+    //           break;
+    //       }else{
+    //           ans.push_back(ch);
+    //       }
+    //   }
+    //       if(ans.empty()){
+    //         return "-1";
+    //     }
+    //   return ans;
+    
+    
+    
+    
+    
+      //apporach =2 using tries
+      string ans = "";
+      Trie *t = new Trie();
+      
+      //insert all string into trie
+      for(int i=0;i<N;i++){
+          t->insertstr(arr[i]);
+      }
+      
+      string first = arr[0];
+      t->lcp(first,ans);
+      
+      if(ans.empty()){
+            return "-1";
+         }
+       
+      return ans;
+       
+       
+    }
+};
+
+//{ Driver Code Starts.
+int main()
+{
+    int t; cin >> t;
+    while (t--)
+    {
+        int n; cin >> n;
+        string arr[n];
+        for (int i = 0; i < n; ++i)
+            cin >> arr[i];
+        
+        Solution ob;
+        cout << ob.longestCommonPrefix (arr, n) << endl;
+    }
+}
+
+// Contributed By: Pranay Bansal
+
+// } Driver Code Ends
