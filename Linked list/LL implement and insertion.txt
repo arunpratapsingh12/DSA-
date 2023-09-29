@@ -1,0 +1,98 @@
+#include<iostream>
+using namespace std;
+
+class llnode{
+
+public:
+    int data;
+    llnode* next;
+
+    //constructor
+    llnode(int d){
+    this->data = d;
+    this->next = NULL;
+
+    }
+
+
+
+};
+
+
+
+    void addAthead(llnode* &head,int d)
+    {
+
+        llnode* temp = new llnode(d);
+        temp->next = head;
+        head = temp;
+
+    }
+
+
+
+    void addAtTail(llnode* &tail,int d)
+    {
+
+        llnode* temp = new llnode(d);
+        tail->next = temp;
+        tail = tail->next;
+
+    }
+
+    void print(llnode* &head){
+    llnode* temp = head;
+
+    while(temp != NULL){
+        cout<<temp->data<<" ";
+        temp = temp->next;
+    }
+    cout<<endl;
+
+    }
+    
+    void addAtSpecipicposi(llnode* &head,llnode* &tail,int position,int d)
+    {
+        if(position == 1){
+            addAthead(head,d);
+            return;
+        }
+        int cnt = 1;
+        llnode* temp = head;
+        while(cnt < position -1){
+            temp = temp->next;
+            cnt++;
+        }
+        
+        if(temp->next == NULL){
+            addAtTail(tail,d);
+            return;
+        }
+        
+        //create new node
+        llnode* node = new llnode(d);
+        node->next = temp->next;
+        temp->next = node;
+        
+    }
+
+int main()
+{
+    llnode* node = new llnode(10);
+    llnode* head = node;
+    llnode* tail = node;
+    cout<<head->data<<endl;
+
+    addAthead(head,20);
+    addAthead(head,30);
+
+    print(head);
+        addAtTail(tail,40);
+  print(head);
+  addAtSpecipicposi(head,tail,3,50);
+  print(head);
+  
+    addAtSpecipicposi(head,tail,2,60);
+  print(head);
+    return 0;
+}
