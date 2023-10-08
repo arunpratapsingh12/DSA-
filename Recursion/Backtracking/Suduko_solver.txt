@@ -1,0 +1,101 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution{
+    
+    public:
+    
+    bool isSafe(int row,int col,vector<vector<int>> mat,int val){
+        for(int i=0;i<mat[0].size();i++){
+            
+            //check row
+            if(mat[row][i] == val){
+                return false;
+            }
+            
+            //chack col
+            if(mat[i][col] == val){
+                return false;
+            }
+            
+            //check 3*3 matrix
+            if(mat[3*(row/3) + i/3][3*(col/3) + i%3] == val){
+                return false;
+            }
+            
+        }
+        
+        return true;
+    }
+    bool solve(vector<vector<int>> mat){
+        int n = mat[0].size();
+        for(int row = 0;row<n;row++){
+            for(int col = 0;col < n ;col++){
+                //check cell
+                // if(mat[row][col] == 0){
+                //     for(int val = 1;val<=9;val++){
+                //         if(isSafe(row,col,mat,val)){
+                //             mat[row][col] = val;
+                            
+                //             bool aagewalasolution = solve(mat);
+                //             if(aagewalasolution){
+                //                 return true;
+                //             }else{
+                //                 //backtrack
+                //                  mat[row][col] = 0;
+                //             }
+                //         }
+                //     }
+                //     return false;
+                
+
+                    
+
+               //this is only check validation
+                if(mat[row][col] != 0){
+                    int val = mat[row][col];
+                    mat[row][col] = 0;
+                    if(isSafe(row,col,mat,val)){
+                         mat[row][col] = val;
+                    }else{
+                        return false;
+                    }
+                }
+                }
+            }
+        
+        
+        return true;
+    }
+public:
+    int isValid(vector<vector<int>> mat){
+        if(solve(mat)){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+};
+
+//{ Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        vector<vector<int>> mat(9, vector<int>(9, 0));
+        for(int i = 0;i < 81;i++)
+            cin>>mat[i/9][i%9];
+        
+        Solution ob;
+        cout<<ob.isValid(mat)<<"\n";
+    }
+    return 0;
+}
+// } Driver Code Ends
