@@ -1,0 +1,52 @@
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    
+	    
+	 
+	   ////kahn's algo
+	   ////1->find the all indegree
+	   ////2->inorder 0 value push into q 
+	   ////3-> Apply BFS
+	   
+	   
+	   ////inorder list
+	   //vector<int> indegree(V);
+	   //for(auto i: *adj){
+	   //    for(auto j : i.second){
+	   //        indegree[j]++;
+	   //    }
+	   //}
+	   
+	   vector<int> indegree(V);
+	    for(int i = 0; i < V; i++)
+            for(auto x : adj[i])                // getting all inDegree  in gfg
+                indegree[x]++;
+	   
+	   //push 0 indegree node
+	   queue<int> q;
+	   for(int i=0;i<V;i++){
+	       if(indegree[i] == 0){
+	           q.push(i);
+	       }
+	   }
+	   
+	   //apply bfs
+	   vector<int> ans;
+	   while(!q.empty()){
+	       int front = q.front();
+	       q.pop();
+	       
+	       //push into ans
+	       ans.push_back(front);
+	       
+	       for(auto neighbour : adj[front]){
+	           indegree[neighbour]--;
+	           if(indegree[neighbour] == 0){
+	               q.push(neighbour);
+	           }
+	       }
+	   }
+	   
+	   return ans;
+	}
+};
