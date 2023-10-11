@@ -1,0 +1,165 @@
+//{ Driver Code Starts
+
+#include <iostream>
+#include <stdio.h>
+using namespace std;
+
+struct Node
+{
+	int data;
+	struct Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+
+void append(struct Node** headRef, int newData)
+{
+	struct Node* new_node = new Node(newData);
+	struct Node *last = *headRef;
+	
+	if (*headRef == NULL)
+	{
+	    *headRef = new_node;
+	    return;
+	}
+	while (last->next != NULL)last = last->next;
+	last->next = new_node;
+}
+
+void printList(struct Node *node)
+{
+    while(node!=NULL){
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    cout<<endl;
+} 
+
+void alternatingSplitList(struct Node*); 
+
+struct Node* a;
+struct Node* b;
+
+int main()
+{
+    int test;
+    cin>>test;
+    
+    while(test--)
+    {
+        a=b=NULL;
+        struct Node* head = NULL;
+        
+        
+        int n, k;
+        cin>>n;
+        
+        while(n--)
+        {
+            cin>>k;
+            append(&head, k);
+        }
+        
+        alternatingSplitList(head);
+        printList(a);
+        printList(b);
+    }
+    return 0;
+}
+
+
+
+
+// } Driver Code Ends
+
+
+/*
+structure of node is as
+struct Node
+{
+	int data;
+	struct Node* next;
+	
+	Node(int x){
+	    data = x;
+	    next = NULL;
+	}
+	
+};
+*/
+
+
+/*
+These are global variables to store heads of split lists
+struct Node* a; //store head of first list
+struct Node* b; //store head of second list
+
+*/
+
+void alternatingSplitList(struct Node* head) 
+{
+    Node* a = NULL; // Head of the first list
+    Node* b = NULL; // Head of the second list
+    Node* aTail = NULL; // Tail of the first list
+    Node* bTail = NULL; // Tail of the second list
+    Node* curr = head;
+    int pos = 1; // Position variable to keep track of the node's position
+    
+    while (curr != NULL) 
+    {
+        if (pos % 2 != 0) // Odd position node
+        {
+            if (a == NULL) 
+            {
+                a = curr;
+                aTail = curr;
+            } 
+            else 
+            {
+                aTail->next = curr;
+                aTail = curr;
+            }
+        } 
+        else // Even position node
+        {
+            if (b == NULL) 
+            {
+                b = curr;
+                bTail = curr;
+            } 
+            else 
+            {
+                bTail->next = curr;
+                bTail = curr;
+            }
+        }
+        
+        curr = curr->next;
+        pos++;
+    }
+    
+    if (aTail != NULL) 
+    {
+        aTail->next = NULL; // Terminate the first list
+    }
+    
+    if (bTail != NULL) 
+    {
+        bTail->next = NULL; // Terminate the second list
+    }
+    
+   // Update global variables a and b with the heads of the two lists
+   
+   
+//   In this version, ::a and ::b are used to update the global variables a and b with the heads o
+// f the two lists. This ensures that the changes made to a and b inside the function are 
+// reflected in the global scope. Make sure to use the scope resolution operator :: to 
+// distinguish the global variables from the local ones inside the function
+    ::a = a;
+    ::b = b;
+}
+
