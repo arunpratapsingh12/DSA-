@@ -1,0 +1,103 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution{
+	public:
+	
+	int solveRecMemo(vector<int>&nums, int amount,vector<int>& dp){
+	     /// base case 
+	    if(amount == 0){
+	        return 0;
+	    }
+	    
+	     if(amount < 0){
+	        return INT_MAX;
+	    }
+	    
+	    //second step
+	    if(dp[amount] != -1){
+	        return dp[amount];
+	    }
+	    
+	    int mini = INT_MAX;
+	    for(int i=0;i<nums.size();i++){
+	        int ans = solveRecMemo(nums,amount-nums[i],dp);
+	        if(ans != INT_MAX){
+	            mini = min(mini,ans+1);
+	        }
+	    }
+	     dp[amount] = mini;
+	     return mini;
+	}
+	
+		int tabulation(vector<int>&nums,int x,vector<int>& dp){
+	   dp[0] = 0;
+	  for(int i=1;i<=x;i++){
+	      for(int j=0;j<nums.size();j++){
+	          if(i-nums[j] >= 0 && dp[i-nums[j]] != INT_MAX){
+	              dp[i] = min(dp[i],1+dp[i-nums[j]]);
+	          }
+	      }
+	  } 
+	    if(dp[x] == INT_MAX){
+	        return -1;
+	    }
+	    return dp[x];
+	  
+	}
+	
+	int solve(vector<int>nums, int amount){
+	     /// base case 
+	    if(amount == 0){
+	        return 0;
+	    }
+	    
+	     if(amount < 0){
+	        return INT_MAX;
+	    }
+	    int mini = INT_MAX;
+	    for(int i=0;i<nums.size();i++){
+	        int ans = solve(nums,amount-nums[i]);
+	        if(ans != INT_MAX){
+	            mini = min(mini,ans+1);
+	        }
+	    }
+	    return mini;
+	}
+	
+	int MinCoin(vector<int>nums, int amount)
+	{
+	    int n = nums.size();
+	   //return solve(nums,amount);
+	   
+	   
+	   vector<int> dp(n+1,-1);
+	   return solveRecMemo(nums,amount,dp);
+	   
+	 //  //tabulation
+	 
+// 	 vector<int> dp(amount + 1,INT_MAX);
+// 	 return tabulation(nums,amount,dp);
+	}	    
+	
+};
+
+//{ Driver Code Starts.
+int main(){
+	int tc;
+	cin >> tc;
+	while(tc--){
+		int n, amount;
+		cin >> n >> amount;
+		vector<int>nums(n);
+		for(int i = 0; i < n; i++)
+			cin >> nums[i];
+		Solution ob;
+		int ans = ob.MinCoin(nums, amount);
+		cout << ans <<"\n";
+	}
+	return 0;
+}
+// } Driver Code Ends
